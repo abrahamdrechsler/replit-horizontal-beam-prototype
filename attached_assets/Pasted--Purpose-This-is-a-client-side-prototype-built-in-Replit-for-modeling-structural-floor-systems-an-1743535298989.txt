@@ -1,0 +1,228 @@
+🛝 Purpose
+
+This is a client-side prototype built in Replit for modeling structural floor systems and beams. It offers a 2D grid-based canvas and a synchronized 3D view to visualize rectangular prisms representing floor systems and beams. This version focuses on interactive drawing, editing, and simple constraint logic without persistence or server-side infrastructure.
+
+🗁 UI Layout
+
+🧱 Left Panel: 2D Canvas
+
+Dimensions: 40' x 40' (i.e., 480 x 480 grid units at 12" spacing)
+
+Gridlines: 12" spacing in both directions
+
+Interaction:
+
+Draw Floor System rectangles
+
+Add beams by snapping to rectangle perimeters
+
+Select/move/delete entities
+
+All drawing and movement actions are constrained to 12" increments
+
+🧪 Right Panel: 3D View
+
+Synced 3D representation of all 2D entities
+
+Features:
+
+Orbit (click & drag)
+
+Zoom (scroll wheel)
+
+Perspective projection
+
+Selected item is outlined in blue in 3D
+
+⚙️ Side Panel (Inspector)
+
+Appears when a prism (floor or beam) is selected
+
+Editable fields for customization
+
+Numeric input fields accept values in inches
+
+🧱 Entity: Floor System
+
+🛝 2D Behavior
+
+Draw: Click once to start on a gridline (first corner), live preview follows cursor, second click finalizes rectangle.
+
+Constraints:
+
+Only snapped to 12" x 12" grid points
+
+Overlapping allowed only by 1 grid unit (12") in any direction
+
+Move: Arrow keys move selected rectangle by 12" increments, orthogonally only
+
+Select: Click in either 2D or 3D. Topmost item gets priority.
+
+Delete: Press Delete key with a rectangle selected
+
+🧪 3D Representation
+
+Rectangular prism extruded downward in Z-direction
+
+Default system depth: 24"
+
+Semi-transparent faces
+
+Selected: blue border highlight
+
+🛠️ Inspector Fields
+
+Field
+
+Default
+
+Type
+
+Notes
+
+Joist Direction
+
+X
+
+Enum
+
+Options: X or Y. Determines joist orientation
+
+Joist Depth
+
+24"
+
+Number
+
+Extruded down from top plane of floor system
+
+Joist Spacing
+
+12"
+
+Number
+
+Centerline spacing between joists. No joists if spacing > half span
+
+System Depth
+
+24"
+
+Number
+
+Total depth of prism. Joists may extend deeper than this
+
+Note: All inspector values are entered in inches, but visual and movement logic respects the 12" grid.
+
+🧱 Joists (Within Floor System)
+
+2" wide rectangular prisms
+
+Oriented per “Joist Direction” (X or Y)
+
+Extruded down from top of floor system
+
+Auto-generated upon setting parameters in Inspector
+
+If spacing exceeds half the span, no joists are generated
+
+🔩 Entity: Beam
+
+🛝 2D Behavior
+
+Enter beam creation mode via button
+
+Click perimeter point on a Floor System (snapped to grid)
+
+Preview orthogonal beam line as mouse moves
+
+Click second perimeter point on any Floor System
+
+Once placed:
+
+Beam stretches/shrinks automatically as floor systems are moved in beam direction
+
+Move beam orthogonally using arrow keys (12" per press), within rectangle perimeter constraints
+
+Delete: Press Delete key
+
+🧪 3D Representation
+
+Rectangular prism extruded downward from top surface of floor system
+
+Length defined by snapped 2D anchor points
+
+Width and depth customizable in inches
+
+🛠️ Inspector Fields
+
+Field
+
+Default
+
+Type
+
+Notes
+
+Width
+
+6"
+
+Number
+
+Extruded perpendicular to beam direction
+
+Depth
+
+24"
+
+Number
+
+Extruded down from top surface
+
+Note: Beam width and depth are defined in inches.
+
+🔁 Global Functions
+
+Action
+
+Method
+
+Create Floor
+
+Click “Add Floor”
+
+Create Beam
+
+Click “Add Beam”
+
+Delete Selected
+
+Press Delete key
+
+Clear All
+
+Button to reset canvas
+
+⚠️ Constraints & Edge Cases
+
+Floor systems cannot overlap more than 12" with another.
+
+Joists will not be generated if their spacing is greater than half the span.
+
+Beam movement is limited by its connection points remaining on the floor system perimeter.
+
+Beam snapping only allowed at 12" grid points along perimeter edges.
+
+All drawing, selection, and movement are restricted to 12" increments.
+
+📦 Technical Notes
+
+Frontend Only: No server-side logic or storage
+
+Libraries: Three.js for 3D, p5.js or raw canvas for 2D
+
+Data Model: Local in-memory state (array of entities + selection state)
+
+Performance: Designed for a small number of entities (<50) on canvas
+
